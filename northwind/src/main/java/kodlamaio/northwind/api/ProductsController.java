@@ -7,17 +7,17 @@ import kodlamaio.northwind.entities.concretes.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductsController {
 
+    @Autowired
     private final ProductService productService;
 
-    @Autowired
     public ProductsController(ProductService productService) {
-        super();
         this.productService = productService;
     }
 
@@ -34,5 +34,25 @@ public class ProductsController {
     @GetMapping("/getByProductName")
     public DataResult<Product> getByProductName(String productName){
         return this.productService.getByProductName(productName);
+    }
+
+    @GetMapping("/getByNameAndCategory")
+    public DataResult<Product> getByNameAndCategoryId(@RequestParam("productName") String productName, @RequestParam("categoryId") int categoryId){
+        return this.productService.getByProductNameAndCategoryId(productName, categoryId);
+    }
+
+    @GetMapping("getByProductNameContains")
+    public DataResult<List<Product>> getByProductNameContains(String productName){
+        return this.productService.getByProductNameContains(productName);
+    }
+
+    @GetMapping("/getAllByPage")
+    DataResult<List<Product>> getAll(int pageNo, int pageSize){
+        return this.productService.getAll(pageNo,pageSize);
+    }
+
+    @GetMapping("/getAllByDesc")
+    public DataResult<List<Product>> getAllSorted(){
+        return this.productService.getAllSorted();
     }
 }
